@@ -1,0 +1,29 @@
+alloca.h        < not POSIX but in every clib we need
+# ctype.h         < available 
+dirent.h        < in newlib, not in msp430-libc
+errno.h         < in newlib, not in msp430-libc
+fcntl.h         < in newlib, not in msp430-libc 
+fnmatch.h       < in newlib, not in msp430-libc 
+glob.h          < in newlib, not in msp430-libc
+histedit.h      < not available, needed for > SMALL
+# inttypes.h      < available
+# limits.h        < available
+paths.h         < in newlib, not in msp430-libc
+pwd.h           < in newlib, not in msp430-libc
+setjmp.h        < available, functions may have to be implemented
+signal.h        < available, functions may have to be implemented
+stdarg.h        < not available => 4 POSIX function
+stddef.h        < not available => a few defines
+stdio.h         < available, either implement perror for msp430 or rewrite lines
+# stdlib.h        < available
+# string.h        < available
+sys/ioctl.h     < not POSIX compatible, maybe equivalent needed
+sys/param.h     < in newlib, not in msp430-libc
+sys/resource.h  < in newlib, not in msp430-libc
+sys/stat.h      < in newlib, not in msp430-libc
+sys/time.h      < in newlib, not in msp430-libc
+sys/times.h     < in newlib, not in msp430-libc
+# sys/types.h     < available
+sys/wait.h      < in newlib, not in msp430-libc
+termios.h       < in newlib, not in msp430-libc
+unistd.h        < in newlib, not in msp430-libc
