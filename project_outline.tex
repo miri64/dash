@@ -1,0 +1,222 @@
+\documentclass[11pt,
+  a4paper,
+  BCOR=7mm
+]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{tocbasic}
+\usepackage[headsepline]{scrpage2}
+\usepackage{fancyref}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{courier}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage[colorlinks=false, linktocpage]{hyperref}
+\setlength\parindent{0pt} 
+
+\usepackage{DejaVuSansMono}
+\lstset{language=C}
+\lstset{basicstyle=\ttfamily}
+\lstset{breaklines=true}
+\lstset{keywordstyle=\color{purple}}
+
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+
+\newdimen\XCoord
+\newdimen\YCoord
+
+\newcommand*{\ExtractCoordinate}[1]{\path (#1); \pgfgetlastxy{\XCoord}{\YCoord};}%
+
+\author{Robert Fels, Martine Lenders, Jakob Pfender}
+\title{Softwareprojekt Telematik:\\POSIX compliant shell\\Project Outline}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\section*{Overview and Motivation}
+\label{sec:overview_motivation}
+Our task is to port a lightweight POSIX compliant shell, preferably
+dash, to RIOT.
+
+\subsection*{What is RIOT?}
+\label{sub:what_is_riot}
+RIOT is an operating system for the Internet of
+Things\footnote{\url{https://en.wikipedia.org/wiki/Internet_of_Things}}.
+Unlike other embedded operating systems such as Contiki or TinyOS, RIOT
+programs can be written in pure C or C++, enabling cross-platform
+compatibility and easy portation of existing code. It is already quite
+feature-rich, with working implementations of 6LoWPAN, RPL, and many
+more. However, it is not yet fully POSIX compliant (see below).
+Furthermore, there exists only a minimal system shell and no file
+system. These are all points we aim to address within this software
+project.
+
+\subsection*{What is POSIX compliance?}
+\label{sub:what_is_posix}
+POSIX stands for ``\textbf{P}ortable \textbf{O}perating \textbf{S}ystems
+\textbf{I}nterface`` and describes a family of standards specified by
+the IEEE for maintaining compatibility between operating systems. It
+defines the API, shells and utility interfaces for software
+compatibility with variants of Unix and other operating systems. The
+standards for the user command line and scripting interface, which form
+the most important part of POSIX for this software project, were
+originally based on the Korn shell. However, many other system shells,
+such as dash (see below), are also compliant with the shell standards
+set by POSIX.
+
+\subsection*{What is dash?}
+\label{sub:what_is_dash}
+Dash is the Debian Almquist shell, a version of the Almquist shell,
+which was originally written by Kenneth Almquist in the 1980s. Dash is
+notable for its fast shell script execution; Debian and its derivatives
+use it as the default /bin/sh for shell scripts, even though bash is
+used as the default interactive shell. Since dash is also very
+lightweight, it is very popular in the embedded sector. Our goal is to
+port dash to RIOT in order to provide a lightweight, fast execution
+environment for shell scripts.
+
+
+\section*{Problems to solve}
+\label{sec:problems}
+In order to port dash to RIOT, we obviously need to bring it to compile
+on RIOT. This will be the first and most important goal of our software
+project. To achieve it, we need to make sure all the prerequisites for
+building dash are in place. This basically means supplying all the
+POSIX-API functions required by dash, as specified in the includes. Some
+of these are already supplied by the newlib and/or the msp430-libc;
+however, a number of header files are not yet implemented in either of
+these libraries. This means that we will have to reimplement them for
+RIOT. This will obviously have the added benefit of not only allowing us
+to compile dash for RIOT, but also furthering RIOT's POSIX compliance,
+which will make future porting of other POSIX-compliant software easier.
+Our first task -- which we have already started -- is thus to identify
+the headers and functions currently missing from the RIOT libraries and
+implementing them. This will provide us with a nice set of more-or-less
+compartmentalized tasks that can be easily divided among team members.
+
+The next problem will be implementing the actual functionality needed for
+a shell to work. Getting dash to compile is one thing; however, this
+doesn't mean that users will be able to execute shell scripts right
+away. In order to use dash, other prerequisites must be met. First and
+most important among these are a file system and environment variables.
+After we have successfully compiled dash for RIOT, the next task will be
+identifying all missing functionality and implementing it.
+
+\section*{Tasks}
+\label{sec:tasks}
+The whole project can be divided into two main phases -- compilation and
+functionality -- with their respective subphases:
+
+\begin{itemize}
+  \item \textbf{Phase 1}: Compilation
+    \begin{itemize}
+      \item \textbf{Subphase 1}: Identify missing headers
+      \item \textbf{Subphase 2}: Implement missing headers
+    \end{itemize}
+  \item \textbf{Phase 2}: Functionality
+    \begin{itemize}
+      \item \textbf{Subphase 3}: Identify missing functionality
+      \item \textbf{Subphase 4}: Implement missing functionality
+      \item \textbf{Subphase 5}: Test
+    \end{itemize}
+\end{itemize}
+
+\subsection*{First main phase: Compilation}
+\label{sub:compilation}
+The expected outcome of this phase is a successful compilation of dash
+on RIOT.
+
+\subsubsection*{Subphase: Identification of missing headers}
+\label{ssub:headers_identification}
+This task is already done. We have compiled a list of headers that
+neither newlib nor msp430-libc provide. This list is not very long.
+
+\subsubsection*{Subphase: Implementation of missing headers}
+\label{ssub:headers_implementation}
+We need to implement the missing headers and the functionality they
+provide. After identifying possible dependencies between these headers,
+we will distribute the implementation tasks among ourselves.
+
+\subsection*{Second main phase: Functionality}
+\label{sub:functionality}
+The expected outcome of this phase is a working implementation of dash
+running on RIOT that provides all the funtionality expected of dash.
+
+\subsubsection*{Subphase: Identification of missing functionality}
+\label{ssub:functionality_identification}
+We will identify all functionality expected by dash, such as a file
+system and environment variables.
+
+\subsubsection*{Subphase: Implementation of missing functionality}
+\label{ssub:functionality_implementation}
+We need to implement all missing functionality. After identifying
+possible dependencies, we will distribute the implementation tasks among
+ourselves.
+
+\subsubsection*{Subphase: Testing}
+\label{ssub:testing}
+In order to test our port, we will design a series of tests in order to
+verify that all functionality expected by dash is provided.
+
+
+\section*{Timeline}
+\label{sec:timeline}
+Our proposed project timeline looks like this:
+\newline
+
+\pgfmathsetmacro{\mintime}{0}
+\pgfmathsetmacro{\maxtime}{11}
+\newcommand{\timeunit}{Weeks}
+\pgfmathtruncatemacro{\timeintervals}{11}
+\pgfmathsetmacro{\scaleitemseparation}{4}
+\pgfmathsetmacro{\timenodewidth}{2cm}
+\newcounter{itemnumber}
+\setcounter{itemnumber}{0}
+\newcommand{\lastnode}{n-0}
+
+\newcommand{\timeentry}[2]{% time, description
+\stepcounter{itemnumber}
+\node[below right,minimum width=\timenodewidth] (n-\theitemnumber) at (\lastnode.south west) {#2};
+\node[right] at (n-\theitemnumber.east) {};
+
+\edef\lastnode{n-\theitemnumber}
+
+\expandafter\edef\csname nodetime\theitemnumber \endcsname{#1}
+}
+
+\newcommand{\drawtimeline}{%
+    \draw[very thick,-latex] (0,0) -- ($(\lastnode.south west)-(\scaleitemseparation,0)+(0,-1)$);
+    \ExtractCoordinate{n-\theitemnumber.south}
+    \pgfmathsetmacro{\yposition}{\YCoord/28.452755}
+    \foreach \x in {1,...,\theitemnumber}
+    {   \pgfmathsetmacro{\timeposition}{\yposition/(\maxtime-\mintime)*\csname nodetime\x \endcsname}
+        \draw (0,\timeposition) -- (0.5,\timeposition) -- ($(n-\x.west)-(0.5,0)$) -- (n-\x.west);
+    }
+    \foreach \x in {0,...,\timeintervals}
+    {   \pgfmathsetmacro{\labelposition}{\yposition/(\maxtime-\mintime)*\x}
+        \node[left] (label-\x) at (-0.2,\labelposition) {\x\ \timeunit};
+        \draw (label-\x.east) -- ++ (0.2,0);
+    }   
+}
+
+\begin{tikzpicture}
+\node[inner sep=0] (n-0) at (\scaleitemseparation,0) {};
+\timeentry{2.5}{May 11th: Successful compilation}
+\timeentry{3.5}{May 18th: Identify missing functionality}
+\timeentry{8}{June 29th: Implement functionality}
+\timeentry{10}{July 8th: Finish testing}
+\timeentry{11}{July 15th: Finish project}
+\drawtimeline
+\end{tikzpicture}
+
+\end{document}
+
+\end{document}
