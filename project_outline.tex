@@ -178,6 +178,35 @@ We need to implement the missing headers and the functionality they
 provide. After identifying possible dependencies between these headers,
 we will distribute the implementation tasks among ourselves.
 
+\pagebreak
+
+A rough preliminary distribution of tasks based on features can be seen below. 
+The headers in \emph{italics} are the ones needed for msp430.
+
+\begin{itemize}
+    \item   \textbf{Jakob:} (Pattern-matching)
+            \begin{itemize}
+                \item   stdarg.h
+                \item   \emph{fnmatch.h}
+                \item   \emph{glob.h}
+            \end{itemize}
+    \item   \textbf{Martine:} (Filesystem)
+            \begin{itemize}
+                \item   File descriptor definitions
+                \item   \emph{fcntl.h}
+                \item   \emph{dirent.h}
+                \item   \emph{paths.h}
+                \item   \emph{pwd.h}
+            \end{itemize}
+    \item   \textbf{Robert:} (Signaling + remainder)
+            \begin{itemize}
+                \item   stddef.h (these are only a few constant macros)
+                \item   signal.h
+                \item   setjmp.h
+                \item   \emph{errno.h (+ getting perror somehow in stdio.h)}
+            \end{itemize}
+\end{itemize}
+
 \subsection*{Second main phase: Functionality}
 \label{sub:functionality}
 The expected outcome of this phase is a working implementation of dash
