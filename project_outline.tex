@@ -137,7 +137,40 @@ on RIOT.
 \subsubsection*{Subphase: Identification of missing headers}
 \label{ssub:headers_identification}
 This task is already done. We have compiled a list of headers that
-neither newlib nor msp430-libc provide. This list is not very long.
+neither newlib nor msp430-libc provide:
+
+\begin{itemize}
+    \item dirent.h\footnotemark[1]
+    \item errno.h\footnotemark[1]
+    \item fcntl.h\footnotemark[1]
+    \item fnmatch.h\footnotemark[1]
+    \item glob.h\footnotemark[1]
+    \item paths.h\footnotemark[1]
+    \item pwd.h\footnotemark[1]
+    \item setjmp.h\footnotemark[2]
+    \item signal.h\footnotemark[2]
+    \item stdarg.h
+    \item stddef.h
+    \item stdio.h\footnotemark[3]
+    \item sys/ioctl.h\footnotemark[4]
+    \item sys/param.h\footnotemark[1]
+    \item sys/resource.h\footnotemark[1]
+    \item sys/stat.h\footnotemark[1]
+    \item sys/time.h\footnotemark[1]
+    \item sys/times.h\footnotemark[1]
+    \item sys/wait.h\footnotemark[1]
+    \item termios.h\footnotemark[1]
+    \item unistd.h\footnotemark[1]
+\end{itemize}
+
+\footnotetext[1]{available in newlib, not in msp430-libc}
+\footnotetext[2]{available but some functions need implementation}
+\footnotetext[3]{available but some functions not available in msp430-libc}
+\footnotetext[4]{not POSIX compliant}
+
+Most of these headers are available in newlib, but not in msp430-libc.
+This is why we will focus on support for non-MSP430 first and add the compliance
+for MSP430 later, if there is time.
 
 \subsubsection*{Subphase: Implementation of missing headers}
 \label{ssub:headers_implementation}
