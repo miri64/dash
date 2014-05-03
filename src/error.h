@@ -79,38 +79,32 @@ extern int exception;
 extern int suppressint;
 extern volatile sig_atomic_t intpending;
 
-#define barrier() ({ __asm__ __volatile__ ("": : :"memory"); })
-#define INTOFF \
-	({ \
+#define barrier() do { \
+        __asm__ __volatile__ ("": : :"memory"); \
+    } while (0)
+#define INTOFF do {\
 		suppressint++; \
 		barrier(); \
-		0; \
-	})
+	} while (0)
 #ifdef REALLY_SMALL
 void __inton(void);
 #define INTON __inton()
 #else
-#define INTON \
-	({ \
+#define INTON do {\
 		barrier(); \
 		if (--suppressint == 0 && intpending) onint(); \
-		0; \
-	})
+	} while (0)
 #endif
-#define FORCEINTON \
-	({ \
+#define FORCEINTON do {\
 		barrier(); \
 		suppressint = 0; \
 		if (intpending) onint(); \
-		0; \
-	})
+	} while (0)
 #define SAVEINT(v) ((v) = suppressint)
-#define RESTOREINT(v) \
-	({ \
+#define RESTOREINT(v) do {\
 		barrier(); \
 		if ((suppressint = (v)) == 0 && intpending) onint(); \
-		0; \
-	})
+	} while (0)
 #define CLEAR_PENDING_INT intpending = 0
 #define int_pending() intpending
 

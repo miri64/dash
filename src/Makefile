@@ -34,8 +34,9 @@ USEMODULE += vtimer
 
 HELPERS = mkinit mksyntax mknodes mksignames
 BUILT_SOURCES = builtins.h nodes.h syntax.h token.h token_vars.h
-CLEANFILES = BUILT_SOURCES
-ALLDEPS = $(BUILT_SOURCES) $(HELPERS)
+CLEANFILES = $(BUILT_SOURCES) $(HELPERS) builtins.c init.c nodes.c signames.c \
+			 syntax.c builtins.def
+ALLDEPS = $(BUILT_SOURCES)
 
 CFLAGS = -include $(abspath $(CURDIR)/../config.h) -DSHELL
 
