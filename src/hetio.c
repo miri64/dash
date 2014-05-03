@@ -53,7 +53,7 @@ static struct termios old_term, new_term;	/* Current termio and the previous ter
 
 static int history_counter = 0;			/* Number of commands in history list */
 static int reset_term = 0;			/* Set to true if the terminal needs to be reset upon exit */
-static int hetio_inter = 0;
+int hetio_inter = 0;
 
 struct history
 {
