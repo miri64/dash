@@ -38,7 +38,8 @@ CLEANFILES = $(BUILT_SOURCES) $(HELPERS) builtins.c init.c nodes.c signames.c \
 			 syntax.c builtins.def
 PROJDEPS = $(BUILT_SOURCES)
 
-CFLAGS = -include $(abspath $(CURDIR)/../config.h) -DSHELL
+CFLAGS = -include $(abspath $(CURDIR)/../config.h) -DSHELL \
+	 -DSMALL -DREALLY_SMALL
 
 include $(RIOTBASE)/Makefile.include
 

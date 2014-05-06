@@ -1,0 +1,183 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{dsfont}
+\usetikzlibrary{spy,matrix}
+\usepackage[style=mla, backend=bibtex]{biblatex}
+\bibliography{storm}
+
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{setspace}
+\defaultfontfeatures{Mapping=tex-text}
+\setmonofont[Mapping={}, Scale=MatchLowercase]{DejaVu Sans Mono}
+\setsansfont[Scale=MatchLowercase]{Linux Biolinum O}
+\setmainfont[]{Linux Libertine O}
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{%
+  \includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    \fontsize{3}{3.5}\selectfont{\color{black!25}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt%
+}}
+
+\newcommand\prelim[1]{\small }
+
+\newcommand\strColor[1]{\color{beamer@blendedblue}{#1}}
+
+\newcommand\sect[1]{\begin{center}\huge\strColor{#1}\end{center}}
+
+\setbeamertemplate{navigation symbols}{}
+
+\pagestyle{fancy}
+\rhead{\vspace{.3em}\includegraphics[width=10em]{assets/FULogo_RGB.eps}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+
+\lstset{language=C}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{breaklines=true}
+\lstset{keywordstyle=\color{purple}}
+
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+
+\newdimen\XCoord
+\newdimen\YCoord
+
+\newcommand*{\ExtractCoordinate}[1]{\path (#1); \pgfgetlastxy{\XCoord}{\YCoord};}%
+
+\title{POSIX compliant shell}
+\author{Robert Fels, Martine Lenders, Jakob Pfender}
+\institute{FU Berlin\\Institut für Informatik\\Softwareprojekt
+Telematik}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\frame{
+\frametitle{Project topic}
+\begin{itemize}
+  \item Port a POSIX compliant shell (e.g. dash) to RIOT
+  \begin{itemize}
+    \item in order to provide an execution environment for shell scripts
+  \end{itemize}
+  \item Prerequisite: RIOT's POSIX compliance needs to be improved
+\end{itemize}
+}
+
+\frame{
+  \frametitle{dash}
+  \begin{itemize}
+    \item Debian Almquist Shell (derivate of BSD Almquist Shell)
+    \item fast shell script execution
+    \item Used by Debian (+derivatives) as default /bin/sh
+    \item lightweight
+  \end{itemize}
+}
+
+\frame{
+    \frametitle{Goals}
+    \begin{itemize}
+      \item dash should build on RIOT
+      \item dash should \textbf{work} on RIOT
+      \item Side effect: RIOT should be more POSIX compliant as a result
+    \end{itemize}
+}
+
+\frame{
+    \frametitle{Work schedule -- Three phases}
+    \begin{itemize}
+      \item \textbf{Phase 1:} Compilation
+        \begin{itemize}
+          \item \textbf{Subphase 1:} Identify missing headers
+          \item \textbf{Subphase 2:} Implement missing headers
+        \end{itemize}
+      \item \textbf{Phase 2:} Functionality
+        \begin{itemize}
+          \item \textbf{Subphase 3:} Identify missing functionality
+          \item \textbf{Subphase 4:} Implement missing functionality
+          \item \textbf{Subphase 5:} Test
+        \end{itemize}
+    \end{itemize}
+     
+}
+
+\frame{
+  \frametitle{Missing functionality (identified so far)}
+  \begin{itemize}
+    \item Pattern matching
+    \item File system
+    \item Signaling
+    \item DEFINEs (errno, stddef etc.)
+  \end{itemize}
+}
+
+\begin{frame}[fragile]
+  \frametitle{Timeline}
+    \pgfmathsetmacro{\mintime}{0}
+    \pgfmathsetmacro{\maxtime}{11}
+    \newcommand{\timeunit}{Weeks}
+    \pgfmathtruncatemacro{\timeintervals}{11}
+    \pgfmathsetmacro{\scaleitemseparation}{4}
+    \pgfmathsetmacro{\timenodewidth}{2cm}
+    \newcounter{itemnumber}
+    \setcounter{itemnumber}{0}
+    \newcommand{\lastnode}{n-0}
+
+    \newcommand{\timeentry}[2]{% time, description
+    \stepcounter{itemnumber}
+    \node[below right,minimum width=\timenodewidth] (n-\theitemnumber) at (\lastnode.south west) {#2};
+    \node[right] at (n-\theitemnumber.east) {};
+
+    \edef\lastnode{n-\theitemnumber}
+
+    \expandafter\edef\csname nodetime\theitemnumber \endcsname{#1}
+    }
+
+    \newcommand{\drawtimeline}{%
+        \draw[very thick,-latex] (0,0) -- ($(\lastnode.south west)-(\scaleitemseparation,0)+(0,-1)$);
+        \ExtractCoordinate{n-\theitemnumber.south}
+        \pgfmathsetmacro{\yposition}{\YCoord/28.452755}
+        \foreach \x in {1,...,\theitemnumber}
+        {   \pgfmathsetmacro{\timeposition}{\yposition/(\maxtime-\mintime)*\csname nodetime\x \endcsname}
+            \draw (0,\timeposition) -- (0.5,\timeposition) -- ($(n-\x.west)-(0.5,0)$) -- (n-\x.west);
+        }
+        \foreach \x in {0,...,\timeintervals}
+        {   \pgfmathsetmacro{\labelposition}{\yposition/(\maxtime-\mintime)*\x}
+            \node[left] (label-\x) at (-0.2,\labelposition) {\x\ \timeunit};
+            \draw (label-\x.east) -- ++ (0.2,0);
+        }   
+    }
+
+    \scalebox{0.7}{
+      \begin{tikzpicture}
+        \node[inner sep=0] (n-0) at (\scaleitemseparation,0) {};
+        \timeentry{2.5}{May 11th: Successful compilation}
+        \timeentry{3.5}{May 18th: Identify missing functionality}
+        \timeentry{8}{June 29th: Implement functionality}
+        \timeentry{10}{July 8th: Finish testing}
+        \timeentry{11}{July 15th: Finish project}
+        \drawtimeline
+      \end{tikzpicture}
+    }
+    
+\end{frame}
+
+\frame{
+  \huge{Questions?}
+}
+
+\end{document}
