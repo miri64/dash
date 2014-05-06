@@ -62,7 +62,7 @@ char *strsignal(int);
 #endif
 
 #ifndef HAVE_STRTOD
-inline double strtod(const char *nptr, char **endptr)
+static inline double strtod(const char *nptr, char **endptr)
 {
 	*endptr = (char *)nptr;
 	return 0;
