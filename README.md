@@ -21,3 +21,19 @@
 * Until May 11th: Try to compile it, identify missing functions and types
 * Until May 18th: distribute tasks (maybe define sub-milestones for next milestone)
 * Until June 29th: implement functionality
+
+# Killing threads
+* Two prerequisites: Scheduler needs to know thread has been killed,
+  memory needs to be freed
+## Scheduler
+* See core/sched.c sched_task_exit()
+* Set scheduler entry for thread PID to NULL
+* Decrease num_tasks
+* Set status to STOPPED (maybe introduce new status KILLED?)
+* active_thread = NULL
+## Memory
+* Implement a process pool that statically allocates memory for MAXNUM
+  processes
+* new threads get first free memory block assigned to them
+* when a thread is killed: mark memory block as free
+* free blocks can be used by new threads
