@@ -15,16 +15,16 @@
 #define HAVE_DECL_ISBLANK 1
 
 /* Define to 1 if you have the `faccessat' function. */
-#define HAVE_FACCESSAT 1
+/* #undef HAVE_FACCESSAT */
 
 /* Define to 1 if you have the `fnmatch' function. */
 /* #undef HAVE_FNMATCH */
 
 /* Define to 1 if you have the `getpwnam' function. */
-#define HAVE_GETPWNAM 1
+/* #undef HAVE_GETPWNAM */
 
 /* Define to 1 if you have the `getrlimit' function. */
-#define HAVE_GETRLIMIT 1
+/* #undef HAVE_GETRLIMIT */
 
 /* Define to 1 if you have the `glob' function. */
 /* #undef HAVE_GLOB */
@@ -36,7 +36,7 @@
 #define HAVE_ISALPHA 1
 
 /* Define to 1 if you have the `killpg' function. */
-#define HAVE_KILLPG 1
+/* #undef HAVE_KILLPG */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -48,7 +48,7 @@
 #define HAVE_PATHS_H 1
 
 /* Define to 1 if you have the `sigsetmask' function. */
-#define HAVE_SIGSETMASK 1
+/* #undef HAVE_SIGSETMASK */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
@@ -69,18 +69,19 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strsignal' function. */
-#define HAVE_STRSIGNAL 1
+/* #undef HAVE_STRSIGNAL */
 
 /* Define to 1 if you have the `strtod' function. */
-#define HAVE_STRTOD 1
+/* #undef HAVE_STRTOD */
 
 /* Define to 1 if you have the `strtoimax' function. */
-#define HAVE_STRTOIMAX 1
+/* #undef HAVE_STRTOIMAX */
 
 /* Define to 1 if you have the `strtoumax' function. */
-#define HAVE_STRTOUMAX 1
+/* #undef HAVE_STRTOUMAX */
 
-#undef HAVE_SYSCONF
+/* Define to 1 if you have the `sysconf' function. */
+/* #undef HAVE_SYSCONF */
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1
@@ -175,16 +176,16 @@
 /* #undef _POSIX_SOURCE */
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef fstat64 */
+#define fstat64 fstat
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef lstat64 */
+#define lstat64 lstat
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef open64 */
+#define open64 open
 
 /* klibc has bsd_signal instead of signal */
 /* #undef signal */
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef stat64 */
+#define stat64 stat
