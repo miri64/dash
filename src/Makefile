@@ -36,7 +36,7 @@ HELPERS = mkinit mksyntax mknodes mksignames
 BUILT_SOURCES = builtins.h nodes.h syntax.h token.h token_vars.h
 CLEANFILES = $(BUILT_SOURCES) $(HELPERS) builtins.c init.c nodes.c signames.c \
 			 syntax.c builtins.def
-ALLDEPS = $(BUILT_SOURCES)
+PROJDEPS = $(BUILT_SOURCES)
 
 CFLAGS = -include $(abspath $(CURDIR)/../config.h) -DSHELL
 
