@@ -72,7 +72,9 @@
 /* #undef HAVE_STRSIGNAL */
 
 /* Define to 1 if you have the `strtod' function. */
-/* #undef HAVE_STRTOD */
+#ifndef BOARD_NATIVE
+#define HAVE_STRTOD 1
+#endif
 
 /* Define to 1 if you have the `strtoimax' function. */
 /* #undef HAVE_STRTOIMAX */
