@@ -81,6 +81,7 @@ extern int etext();
 STATIC void read_profile(const char *);
 STATIC char *find_dot_file(char *);
 static int cmdloop(int);
+int main(void);
 
 /*
  * Main routine.  We initialize things, parse the arguments, execute
@@ -348,3 +349,9 @@ exitcmd(int argc, char **argv)
 const shell_command_t dash_commands[] = {
     { "sh", "Starts a POSIX compliant shell (dash)", dash_shell_handler },
 };
+
+int
+main(void) {
+    dash_shell_handler(0, {""});
+    return 0;
+}
