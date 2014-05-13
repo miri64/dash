@@ -32,12 +32,6 @@ export QUIET ?= 1
 USEMODULE += posix
 USEMODULE += vtimer
 
-HELPERS = mkinit mksyntax mknodes mksignames
-BUILT_SOURCES = builtins.h nodes.h syntax.h token.h token_vars.h
-CLEANFILES = $(BUILT_SOURCES) $(HELPERS) builtins.c init.c nodes.c signames.c \
-			 syntax.c builtins.def
-PROJDEPS = $(BUILT_SOURCES)
-
 CFLAGS = -include $(abspath $(CURDIR)/../config.h) -DSHELL \
 	 -DSMALL -DREALLY_SMALL
 
@@ -48,29 +42,3 @@ SRC = \
 	histedit.c input.c jobs.c mail.c main.c memalloc.c miscbltin.c \
 	mystring.c options.c parser.c redir.c show.c trap.c output.c \
 	printf.c system.c test.c times.c var.c
-
-token.h token_vars.h: mktokens
-	$(AD)sh $^
-
-builtins.def: builtins.def.in ../config.h
-	$(AD)$(CC) -E -x c -o $@ $<
-
-builtins.c builtins.h: mkbuiltins builtins.def
-	$(AD)sh $^
-
-init.c: mkinit $(dash_CFILES)
-	$(AD)./$^
-
-nodes.c nodes.h: mknodes nodetypes nodes.c.pat
-	$(AD)./$^
-
-syntax.c syntax.h: mksyntax
-	$(AD)./$^
-
-signames.c: mksignames
-	$(AD)./$^
-
-mksyntax: token.h
-
-$(HELPERS): %: %.c
-	$(AD)$(CC) -o $@ $<
