@@ -36,6 +36,8 @@
 
 #include <errno.h>
 
+#include "shell.h"
+
 /* pid of main shell */
 extern int rootpid;
 /* shell level: 0 for the main shell, 1 for its children, and so on */
@@ -52,3 +54,7 @@ extern int *dash_errno;
 void readcmdfile(char *);
 int dotcmd(int, char **);
 int exitcmd(int, char **);
+void dash_shell_handler(int argc, char **argv);
+
+extern const shell_command_t dash_commands[];
+

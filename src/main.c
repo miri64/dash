@@ -60,6 +60,8 @@
 #include "exec.h"
 #include "cd.h"
 
+#include "shell.h"
+
 #ifdef HETIO
 #include "hetio.h"
 #endif
@@ -79,7 +81,6 @@ extern int etext();
 STATIC void read_profile(const char *);
 STATIC char *find_dot_file(char *);
 static int cmdloop(int);
-int main(int, char **);
 
 /*
  * Main routine.  We initialize things, parse the arguments, execute
@@ -89,8 +90,7 @@ int main(int, char **);
  * is used to figure out how far we had gotten.
  */
 
-int
-main(int argc, char **argv)
+void dash_shell_handler(int argc, char **argv)
 {
 	char *shinit;
 	volatile int state;
@@ -247,7 +247,7 @@ cmdloop(int top)
 		}
 	}
 
-	return status;
+	/* return status; */
 }
 
 
@@ -344,3 +344,7 @@ exitcmd(int argc, char **argv)
 	exraise(EXEXIT);
 	/* NOTREACHED */
 }
+
+const shell_command_t dash_commands[] = {
+    { "sh", "Starts a POSIX compliant shell (dash)", dash_shell_handler },
+};
