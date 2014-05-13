@@ -158,7 +158,7 @@ main(int argc, char **argv)
 	putc('\n', hfile);
 
 	/* Generate the syntax tables. */
-	fputs("#include \"shell.h\"\n", cfile);
+	fputs("#include \"dashell.h\"\n", cfile);
 	fputs("#include \"syntax.h\"\n\n", cfile);
 	init();
 	fputs("/* syntax table used when not in quotes */\n", cfile);

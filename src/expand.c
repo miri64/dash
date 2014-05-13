@@ -56,7 +56,7 @@
  * backquotes, shell variables, and file metacharacters.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "main.h"
 #include "nodes.h"
 #include "eval.h"

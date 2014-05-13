@@ -46,7 +46,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "options.h"
 #include "var.h"
 #include "output.h"

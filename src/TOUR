@@ -332,7 +332,7 @@ variable plinno is saved and restored when files are pushed and
 popped from the stack.  The parser routines store the number of
 the current line in this variable.
 
-DEBUGGING:  If DEBUG is defined in shell.h, then the shell will
+DEBUGGING:  If DEBUG is defined in dashell.h, then the shell will
 write debugging information to the file $HOME/trace.  Most of
 this is done using the TRACE macro, which takes a set of printf
 arguments inside two sets of parenthesis.  Example:

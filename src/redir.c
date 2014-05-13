@@ -46,7 +46,7 @@
  */
 
 #include "main.h"
-#include "shell.h"
+#include "dashell.h"
 #include "nodes.h"
 #include "jobs.h"
 #include "options.h"

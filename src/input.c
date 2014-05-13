@@ -43,7 +43,7 @@
  */
 
 #include "eval.h"
-#include "shell.h"
+#include "dashell.h"
 #include "redir.h"
 #include "syntax.h"
 #include "input.h"

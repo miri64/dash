@@ -41,7 +41,7 @@
  * Evaluate a command.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "nodes.h"
 #include "syntax.h"
 #include "expand.h"

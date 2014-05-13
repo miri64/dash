@@ -48,7 +48,7 @@
 #endif
 #include <sys/ioctl.h>
 
-#include "shell.h"
+#include "dashell.h"
 #if JOBS
 #include <termios.h>
 #undef CEOF			/* syntax.h redefines this */

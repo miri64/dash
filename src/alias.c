@@ -33,7 +33,7 @@
  */
 
 #include <stdlib.h>
-#include "shell.h"
+#include "dashell.h"
 #include "input.h"
 #include "output.h"
 #include "error.h"

@@ -39,7 +39,7 @@
 #include <fcntl.h>
 
 
-#include "shell.h"
+#include "dashell.h"
 #include "main.h"
 #include "mail.h"
 #include "options.h"

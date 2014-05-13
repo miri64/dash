@@ -48,7 +48,7 @@
 #include <limits.h>
 #include <inttypes.h>
 #include <stdlib.h>
-#include "shell.h"
+#include "dashell.h"
 #include "syntax.h"
 #include "error.h"
 #include "mystring.h"

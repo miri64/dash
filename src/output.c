@@ -56,7 +56,7 @@
 #endif
 #include <limits.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "syntax.h"
 #include "output.h"
 #include "memalloc.h"

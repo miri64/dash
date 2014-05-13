@@ -42,7 +42,7 @@
 /*
  * Editline and history functions (and glue).
  */
-#include "shell.h"
+#include "dashell.h"
 #include "parser.h"
 #include "var.h"
 #include "options.h"

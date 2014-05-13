@@ -39,7 +39,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "nodes.h"
 #include "exec.h"	/* defines padvance() */
 #include "var.h"

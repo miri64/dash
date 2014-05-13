@@ -35,7 +35,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "output.h"
 #include "memalloc.h"
 #include "error.h"

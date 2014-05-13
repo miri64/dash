@@ -43,7 +43,7 @@
  * The cd and pwd commands.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "var.h"
 #include "nodes.h"	/* for jobs.h */
 #include "jobs.h"

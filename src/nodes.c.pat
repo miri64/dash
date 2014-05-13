@@ -39,7 +39,7 @@
  * Routine for dealing with parsed shell commands.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "nodes.h"
 #include "memalloc.h"
 #include "machdep.h"

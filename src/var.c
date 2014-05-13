@@ -43,7 +43,7 @@
  * Shell variables.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "output.h"
 #include "expand.h"
 #include "nodes.h"	/* for other headers */

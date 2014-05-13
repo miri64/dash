@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "main.h"
 #include "options.h"
 #include "output.h"

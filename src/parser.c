@@ -38,7 +38,7 @@
 
 #include <stdlib.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "parser.h"
 #include "nodes.h"
 #include "expand.h"	/* defines rmescapes() */

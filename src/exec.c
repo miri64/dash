@@ -50,7 +50,7 @@
  * would make the command name "hash" a misnomer.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "main.h"
 #include "nodes.h"
 #include "parser.h"

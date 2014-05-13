@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include "arith_yacc.h"
 #include "expand.h"
-#include "shell.h"
+#include "dashell.h"
 #include "error.h"
 #include "output.h"
 #include "var.h"

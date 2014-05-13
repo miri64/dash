@@ -40,7 +40,7 @@
  * routines to ash routines using defines.
  */
 
-#include "shell.h"
+#include "dashell.h"
 #include "mystring.h"
 #include "options.h"
 #ifdef SHELL

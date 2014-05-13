@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "main.h"
 #include "nodes.h"	/* for other headers */
 #include "eval.h"

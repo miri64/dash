@@ -36,7 +36,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "shell.h"
+#include "dashell.h"
 #define DEFINE_OPTIONS
 #include "options.h"
 #undef DEFINE_OPTIONS

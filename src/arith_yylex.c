@@ -38,7 +38,7 @@
 #include "arith_yacc.h"
 #include "expand.h"
 #include "error.h"
-#include "shell.h"
+#include "dashell.h"
 #include "memalloc.h"
 #include "syntax.h"
 #include "system.h"

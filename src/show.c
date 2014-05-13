@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "shell.h"
+#include "dashell.h"
 #include "parser.h"
 #include "nodes.h"
 #include "mystring.h"
