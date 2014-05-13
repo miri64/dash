@@ -38,6 +38,7 @@ Usage and Known bugs:
 
 #include "input.h"
 #include "output.h"
+#include "trap.h"
 
 #include "hetio.h"
 
@@ -201,7 +202,7 @@ int hetio_read_input(int fd)
 					break;
 				case 4:		/* Control-D */
 					if (!len)
-						exitshell(0);
+						exitshell();
 					break;
 				case 21: 	/* Control-U */
 					/* Return to begining of line. */
