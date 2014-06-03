@@ -1,0 +1,143 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{dsfont}
+\usetikzlibrary{spy,matrix}
+\usepackage[style=mla, backend=bibtex]{biblatex}
+\bibliography{storm}
+
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{setspace}
+\defaultfontfeatures{Mapping=tex-text}
+\setmonofont[Mapping={}, Scale=MatchLowercase]{DejaVu Sans Mono}
+\setsansfont[Scale=MatchLowercase]{Linux Biolinum O}
+\setmainfont[]{Linux Libertine O}
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{%
+  \includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    \fontsize{3}{3.5}\selectfont{\color{black!25}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt%
+}}
+
+\newcommand\prelim[1]{\small }
+
+\newcommand\strColor[1]{\color{beamer@blendedblue}{#1}}
+
+\newcommand\sect[1]{\begin{center}\huge\strColor{#1}\end{center}}
+
+\setbeamertemplate{navigation symbols}{}
+
+\pagestyle{fancy}
+\rhead{\vspace{.3em}\includegraphics[width=10em]{assets/FULogo_RGB.eps}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+
+\lstset{language=C}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{breaklines=true}
+\lstset{keywordstyle=\color{purple}}
+
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+
+\newdimen\XCoord
+\newdimen\YCoord
+
+\newcommand*{\ExtractCoordinate}[1]{\path (#1); \pgfgetlastxy{\XCoord}{\YCoord};}%
+
+\title{POSIX compliant shell}
+\author{Robert Fels, Martine Lenders, Jakob Pfender}
+\institute{FU Berlin\\Institut für Informatik\\Softwareprojekt
+Telematik}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\frame{
+\frametitle{Project topic}
+\begin{itemize}
+  \item Port a POSIX compliant shell (dash) to RIOT
+  \begin{itemize}
+    \item in order to provide an execution environment for shell scripts
+  \end{itemize}
+  \item Prerequisite: RIOT's POSIX compliance needs to be improved
+  \item Goals:
+    \begin{itemize}
+      \item dash builds on RIOT
+      \item dash \textbf{works} on RIOT
+      \item RIOT becomes more POSIX compliant
+    \end{itemize}
+\end{itemize}
+}
+
+\frame{
+    \frametitle{Work schedule -- Three phases}
+    \begin{itemize}
+      \item \textbf{Phase 1:} Compilation
+        \begin{itemize}
+          \item \textbf{Subphase 1:} Identify missing headers
+          \item \textbf{Subphase 2:} Implement missing headers
+        \end{itemize}
+      \item \textbf{Phase 2:} Functionality
+        \begin{itemize}
+          \item \textbf{Subphase 3:} Identify missing functionality
+          \item \textbf{Subphase 4:} Implement missing functionality
+          \item \textbf{Subphase 5:} Test
+        \end{itemize}
+    \end{itemize}
+
+}
+
+\frame{
+  \frametitle{Achievements so far}
+  \begin{itemize}
+    \item Defined POSIX prototypes
+    \item Implemented capabilities to kill processes
+    \item Compilation of *.c and *.h files possible (but no linking)
+    \item Identified some features we don't need to implement after all
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Next steps}
+  \begin{itemize}
+    \item Implement POSIX functions
+      \begin{itemize}
+        \item Wrapper + extension of RIOT-core and/or RIOT-sys
+        \item Signaling
+        \item File system
+      \end{itemize}
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Differences from original plan}
+  \begin{itemize}
+    \item Some functionality was identified as not needed (see slide 4)
+      \begin{itemize}
+        \item Globbing / pattern matching
+        \item Terminal-specific functions
+        \item History
+      \end{itemize}
+  \end{itemize}
+}
+
+\frame{
+  \huge{Questions?}
+}
+
+\end{document}
