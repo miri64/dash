@@ -34,7 +34,6 @@ Usage and Known bugs:
 #include <string.h>
 #include <termios.h>
 #include <ctype.h>
-#include <sys/ioctl.h>
 
 #include "input.h"
 #include "output.h"

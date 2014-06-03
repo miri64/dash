@@ -45,7 +45,6 @@
 
 #include <sys/types.h>		/* quad_t */
 #include <sys/param.h>		/* BSD4_4 */
-#include <sys/ioctl.h>
 
 #include <stdio.h>	/* defines BUFSIZ */
 #include <string.h>

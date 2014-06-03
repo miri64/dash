@@ -46,7 +46,6 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
-#include <sys/ioctl.h>
 
 #include "dashell.h"
 #if JOBS
