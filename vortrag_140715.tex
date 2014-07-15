@@ -149,7 +149,15 @@ Telematik}
           scripts to RIOT
           \begin{itemize}
               \item FAT (problematic because of licensing issues)
-              \item UFFS, nuttX
+              \item UFFS, nuttX (not used so often, quite new, missing thorough testing)
+	      \item Coffee file system (CFS) from contiki seems to a good choice
+	      \begin{itemize}
+		\item minimalistic, yet fully functional file system
+		\item POSIX complient
+		\item primarily aimed at sensor devices that equiped with Flash Memories or EEPROM
+		\item there are no Contiki-specific abstractions used in the implementation 			      of CFS
+		\item implementation not stated yet
+	      \end{itemize}
           \end{itemize}
     \item SCFS (shell\_commands file system)
       \begin{itemize}
