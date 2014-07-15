@@ -1,0 +1,198 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{dsfont}
+\usetikzlibrary{spy,matrix}
+\usepackage[style=mla, backend=bibtex]{biblatex}
+\bibliography{storm}
+
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{setspace}
+\defaultfontfeatures{Mapping=tex-text}
+\setmonofont[Mapping={}, Scale=MatchLowercase]{Source Code Pro}
+\setsansfont[Scale=MatchLowercase]{Source Sans Pro}
+\setmainfont[]{Source Serif Pro}
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{%
+  \includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    \fontsize{3}{3.5}\selectfont{\color{black!25}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt%
+}}
+
+\newcommand\prelim[1]{\small }
+
+\newcommand\strColor[1]{\color{beamer@blendedblue}{#1}}
+
+\newcommand\sect[1]{\begin{center}\huge\strColor{#1}\end{center}}
+
+\setbeamertemplate{navigation symbols}{}
+
+\pagestyle{fancy}
+\rhead{\vspace{.3em}\includegraphics[width=10em]{assets/FULogo_RGB.eps}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+
+\lstset{language=C}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{breaklines=true}
+\lstset{keywordstyle=\color{purple}}
+
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+
+\usepackage{pifont}
+
+\newdimen\XCoord
+\newdimen\YCoord
+
+\newcommand*{\ExtractCoordinate}[1]{\path (#1); \pgfgetlastxy{\XCoord}{\YCoord};}%
+
+\title{POSIX compliant shell}
+\author{Robert Fels, Martine Lenders, Jakob Pfender}
+\institute{FU Berlin\\Institut für Informatik\\Softwareprojekt
+Telematik}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\frame{
+\frametitle{Project topic}
+\begin{itemize}
+  \item \textbf{Goal:} Port a POSIX compliant shell (dash) to RIOT
+  \begin{itemize}
+    \item \textbf{Motivation:} provide an execution environment for shell scripts
+    \item \textbf{Motivation:} Improve RIOT's POSIX compliance
+  \end{itemize}
+\end{itemize}
+}
+
+\frame{
+    \frametitle{Work schedule -- Three phases}
+    \begin{itemize}
+      \item \textbf{Phase 1:} Compilation
+        \begin{itemize}
+          \item \textbf{Subphase 1:} Identify missing headers $\checkmark$
+          \item \textbf{Subphase 2:} Implement missing headers ($\checkmark$) (prototypes)
+        \end{itemize}
+      \item \textbf{Phase 2:} Functionality
+        \begin{itemize}
+          \item \textbf{Subphase 3:} Identify missing functionality
+            $\checkmark$
+          \item \textbf{Subphase 4:} Implement missing functionality ($\checkmark$)
+            \begin{itemize}
+              \item Process handling and signaling $\checkmark$
+                \begin{itemize}
+                  \item \texttt{fork()} $\checkmark$
+                  \item \texttt{kill()} $\checkmark$
+                \end{itemize}
+              \item File system ($\checkmark$)
+              \item Way to execute RIOT's predefined shell handlers
+                (\texttt{shell\_commands}) ($\checkmark$)
+              \item Wrappers for POSIX functions $\times$
+            \end{itemize}
+          \item \textbf{Subphase 5:} Test $\times$
+        \end{itemize}
+    \end{itemize}
+}
+
+\frame{
+  \frametitle{Issues}
+  \begin{itemize}
+    \item Close to none of the POSIX prerequisites needed to implement
+      a POSIX compliant shell were there to begin with
+    \item RIOT process handling misses a lot of the functionality
+      expected by POSIX
+      \begin{itemize}
+        \item e.g. no signaling, no forking
+      \end{itemize}
+    \item No file system (UNIX philosophy: everything is a file)
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Achievements (1)}
+  \begin{itemize}
+    \item Defined POSIX prototypes
+    \item Implemented capabilities to kill processes
+        \begin{itemize}
+            \item Pull request submitted
+            \item stalled, since IPC can't handle threads getting suddenly killed
+            \item still waiting for PR \#1270
+        \end{itemize}
+    \item Forking
+      \begin{itemize}
+        \item Pull request submitted
+      \end{itemize}
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Achievements (2)}
+  \begin{itemize}
+    \item Compilation of *.c and *.h files
+    \item Designed file system interface (loosely based on FUSE)
+    \item informed about possible file systems to implement to present shell
+          scripts to RIOT
+          \begin{itemize}
+              \item FAT (problematic because of licensing issues)
+              \item UFFS, nuttX
+          \end{itemize}
+    \item SCFS (shell\_commands file system)
+      \begin{itemize}
+        \item Pull request submitted
+      \end{itemize}
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{What was planned v. what was implemented}
+  \begin{itemize}
+    \item No wrappers for POSIX functionality
+    \item No functioning file system
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Perspectives}
+  \begin{itemize}
+    \item Keep working on currently open pull requests
+      \begin{itemize}
+        \item Refactoring
+        \item Documentation
+        \item Tests
+      \end{itemize}
+    \item Implement file system and missing POSIX functionalities
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Pull Requests}
+  \begin{itemize}
+    \item \textbf{(Include missing functions in header files):} \#1166
+    \item \textbf{Return-based error handling for shell handlers:} \#1243
+    \item \textbf{Killing processes:} \#1245
+    \item \textbf{File system:} \#1265
+    \item \textbf{Fork:} \#1384
+    \item \textbf{SCFS:} \#1418
+  \end{itemize}
+}
+
+\frame{
+  \huge{Questions?}
+}
+
+\end{document}
