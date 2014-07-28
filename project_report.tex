@@ -12,6 +12,7 @@
 \usepackage{stfloats}
 \usepackage{url}
 \usepackage{listings}
+\usepackage{todonotes}
 
 \hyphenation{}
 
@@ -66,7 +67,7 @@ interact directly with the system, executing commands, producing output
 et cetera. However, this is not the focus of this project. There is no
 real need for an interactive shell in the embedded context, where
 devices are ideally programmed once and then left to perform their tasks
-indefinitely, producing non-interactive output. The focus, as described
+indefinitely, producing non-interactive output.\todo{Maybe mention that there is already a somewhat interactive shell.} The focus, as described
 in section \ref{sub:Motivation}, is primarily to provide an execution
 environment for shell scripts as a lightweight alternative to compiling
 and flashing full-fledged C applications.
@@ -201,7 +202,8 @@ candidates we considered:
     or EEPROM. Although it is part of Contiki, there are no
     Contiki-specific abstractions used in its implementation, which
     means that porting it to RIOT is feasible.
-  \item \emph{SCFS} -- wat
+  \item \emph{SCFS} -- \todo{not really part of this} giving access to already
+    implemented shell handlers in RIOT
 \end{itemize}
 
 \subsubsection{Wrappers for POSIX functions}
