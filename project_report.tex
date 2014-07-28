@@ -1,0 +1,234 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage[pdftex]{graphicx}
+\usepackage[cmex10]{amsmath}
+\usepackage{algorithmic}
+\usepackage{array}
+\usepackage{mdwmath}
+\usepackage{mdwtab}
+\usepackage{eqparbox}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage{fixltx2e}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{listings}
+
+\hyphenation{}
+
+
+\begin{document}
+\title{Softwareprojekt Telematik\\POSIX Compliant Shell\\Final Report}
+
+
+\author{\IEEEauthorblockN{Robert Fels}
+\IEEEauthorblockA{robert.fels@fu-berlin.de}
+\and
+\IEEEauthorblockN{Martine Lenders}
+\IEEEauthorblockA{mlenders@inf.fu-berlin.de}
+\and
+\IEEEauthorblockN{Jakob Pfender}
+\IEEEauthorblockA{jakob.pfender@fu-berlin.de}}
+
+\maketitle
+
+
+\begin{abstract}
+\end{abstract}
+
+\section{Introduction}
+\label{sec:Introduction}
+
+\subsection{Goals}
+\label{sub:Goals}
+The goal of this project was to port a POSIX compliant shell, such as
+dash\cite{dash} or BusyBox\cite{busybox}, to RIOT. In order to do so,
+RIOT's POSIX compliance initially needed to be improved.
+
+\subsection{Motivation}
+\label{sub:Motivation}
+The motivation for this project is twofold: On the one hand, the direct
+advantage of having a lightweight shell on RIOT is that it provides an
+execution environment for shell scripts. This means that developers are
+able to write small tasks as shell scripts as opposed to writing them in
+C, compiling and flashing them onto the device. In addition to this,
+existing shell scripts can be easily ported to RIOT. The other aspect
+that motivates this project is the fact that dash is POSIX compliant,
+which implies that systems it runs on are also expected to be POSIX
+compliant to some degree. While the POSIXization of RIOT is already
+underway, it is not fully compliant yet. Porting a POSIX compliant shell
+to RIOT would go a long way toward improving this compliance.
+
+\subsection{Context}
+\label{sub:Context}
+When talking about shells, the dominant aspect is more often than not
+their interactivity, i.e. providing a command line for the user to
+interact directly with the system, executing commands, producing output
+et cetera. However, this is not the focus of this project. There is no
+real need for an interactive shell in the embedded context, where
+devices are ideally programmed once and then left to perform their tasks
+indefinitely, producing non-interactive output. The focus, as described
+in section \ref{sub:Motivation}, is primarily to provide an execution
+environment for shell scripts as a lightweight alternative to compiling
+and flashing full-fledged C applications.
+
+\section{Approach}
+\label{sec:Approach}
+The first decision to be made was what shell to implement. We decided to
+implement dash because ...
+We divided the work to be done in order to port dash to RIOT into two
+rough phases. The first phase is the compilation, i.e. getting dash to
+build on RIOT. The second phase is the actual functionality needed to
+run dash and execute shell scripts.
+
+\subsection{Compilation}
+\label{sub:Compilation}
+Getting dash to compile on RIOT means supplying all of the POSIX-API
+functions required by dash, as specified in its includes. We further
+divided this phase up into the identification of these missing headers
+and their respective implementation.
+
+Some of the needed headers are already supplied by the newlib and/or the
+msp430-libc. However, a number of header files were not yet implemented
+in either of these libraries, necessitating their reimplementation for
+RIOT. The added benefit of implementing these headers is not only
+enabling dash to build on RIOT, but also furthering RIOT's POSIX
+compliance, which in turn makes future porting of other POSIX-compliant
+software to RIOT easier.
+
+Identifying the headers that needed to be implemented was very helpful
+in compartmentalizing the initial work into several small tasks with
+minimal overlap. The following is an overview of headers we identified
+as needing work:
+
+\begin{itemize}
+    \item dirent.h\footnotemark[1]
+    \item errno.h\footnotemark[1]
+    \item fcntl.h\footnotemark[1]
+    \item fnmatch.h\footnotemark[1]
+    \item glob.h\footnotemark[1]
+    \item paths.h\footnotemark[1]
+    \item pwd.h\footnotemark[1]
+    \item sys/param.h\footnotemark[1]
+    \item sys/resource.h\footnotemark[1]
+    \item sys/stat.h\footnotemark[1]
+    \item sys/time.h\footnotemark[1]
+    \item sys/times.h\footnotemark[1]
+    \item sys/wait.h\footnotemark[1]
+    \item termios.h\footnotemark[1]
+    \item unistd.h\footnotemark[1]
+    \item setjmp.h\footnotemark[2]
+    \item signal.h\footnotemark[2]
+    \item stdio.h\footnotemark[3]
+    \item sys/ioctl.h\footnotemark[4]
+    \item stdarg.h
+    \item stddef.h
+\end{itemize}
+
+\footnotetext[1]{available in newlib, not in msp430-libc}
+\footnotetext[2]{available but some functions need implementation}
+\footnotetext[3]{available but some functions not available in msp430-libc}
+\footnotetext[4]{not POSIX compliant}
+
+As you can see, most of these headers are available in newlib, but not
+in msp430-libc. Therefore, we decided to primarily focus on support for
+non-MSP430 first and add the compliance for MSP430 later.
+
+\subsection{Functionality}
+\label{sub:Functionality}
+After providing the prerequisites for building dash on RIOT and thus
+also providing the level of POSIX compliance expected by dash, there are
+still several steps needed to be taken in order to actually have
+a usable execution environment for shell scripts. There are several
+things a shell such as dash expects of the system it runs on. These
+include process handling and signaling, the ability to call
+\texttt{fork()} and \texttt{kill()}, some sort of file system, as
+well as wrappers for POSIX functions. We will now describe these and our
+approach to implementing them in detail.
+
+\subsubsection{Process handling and signaling}
+\label{ssub:Process handling and signaling}
+
+\subsubsection{\texttt{fork()}}
+\label{ssub:fork}
+Implementing \texttt{fork()} turned out to be not exactly trivial, since
+RIOT is currently missing the capability to directly read and/or set the
+instruction pointer, which is integral to \texttt{fork()}. We
+implemented the needed functions for the Cortex-M3 processor; the other
+CPUs are still missing this functionality.
+
+In order to allow forking processes, we created a pool of
+pre-initialized memory that can be used to copy stacks of forked
+processes. Forking a thread then allocates the next free block in this
+pool, duplicates the current thread's stack and stack pointer and sets
+the newly created thread's instruction pointer to a point after the
+original thread's return.
+
+\subsubsection{\texttt{kill()}}
+\label{ssub:kill}
+Shells expect to be able to kill processes ``from the outside``, i.e.
+the scheduler has the ability to terminate threads other than the one
+that is currently running. Implementing this functionality was a simple
+matter of supplying a \texttt{sched\_task\_kill()} function to kill
+processes using their PID and refactoring the old
+\texttt{sched\_task\_exit()} (used to terminate the currently active
+process) to call this new function.
+
+\subsubsection{File system}
+\label{ssub:File system}
+In UNIX philosophy, everything is a file. This is also apparent in POSIX
+and in the implementation of POSIX compliant shells such as dash.
+However, RIOT currently does not provide a file system. This was
+a problem we needed to adress in order to provide a function shell
+script environment.
+
+We designed a file system interface which was loosely based on
+FUSE\cite{fuse}. We informed ourselves about possible file systems to
+implement in order to present shell scripts to RIOT. These were the
+candidates we considered:
+
+\begin{itemize}
+  \item \emph{FAT}\cite{fat} -- problematic because of licensing issues. The FAT
+    specification is owned by Microsoft, which does not allow free use
+    of these specifications and ``associated intellectual
+    property``\cite{fatlicense}.
+  \item \emph{UFFS}\cite{uffs}, \emph{nuttX}\cite{nuttx} -- these are
+    not used very often. They are quite new and are still missing
+    thorough testing.
+  \item \emph{CFS}\cite{cfs} -- seems to be the best available choice in
+    our opinion. It is a minimal, yet fully functional, POSIX compliant
+    file system. Since it is part of the Contiki project\cite{contiki},
+    it is primarily aimed at sensor devices equipped with flash memory
+    or EEPROM. Although it is part of Contiki, there are no
+    Contiki-specific abstractions used in its implementation, which
+    means that porting it to RIOT is feasible.
+  \item \emph{SCFS} -- wat
+\end{itemize}
+
+\subsubsection{Wrappers for POSIX functions}
+\label{ssub:Wrappers for POSIX functions}
+
+\subsection{Issues}
+\label{sub:Issues}
+
+\section{Achievements}
+\label{sec:Achievements}
+
+\subsection{Comparison to original plan}
+\label{sub:Comparison to original plan}
+
+\subsection{Pull Requests}
+\label{sub:Pull Requests}
+
+\section{Perspectives}
+\label{sec:Perspectives}
+
+\section{Conclusion}
+\label{sec:Conclusion}
+
+\section*{Acknowledgment}
+\label{sec:Acknowledgement}
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,bibliography}
+
+\end{document}
