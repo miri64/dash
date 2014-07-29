@@ -77,8 +77,11 @@ full-fledged C applications.
 
 \section{Approach}
 \label{sec:Approach}
-The first decision to be made was what shell to implement. We decided to
-implement dash because ...
+The first decision to be made was which shell to implement. We decided to
+implement dash because BusyBox is itself a derivative of dash, but
+brings with it a slew of features (such as an SSH server) that we deemed
+superfluous to our needs.
+
 We divided the work to be done in order to port dash to RIOT into two
 rough phases. The first phase is the compilation, i.e. getting dash to
 build on RIOT. The second phase is the actual functionality needed to
