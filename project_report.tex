@@ -217,24 +217,98 @@ candidates we considered:
 
 \subsection{Issues}
 \label{sub:Issues}
+The primary issue impeding our work on the actual dash implementation
+was the fact that close to none of the POSIX prerequisites expected by
+dash were supplied to begin with. This meant that most of our initial
+work was only tangential to dash, being concerned with bringing RIOT up
+to a level of POSIX compliance sufficient for dash to work. In addition
+to the hard POSIX requirements, several other features expected by dash
+were also missing from RIOT; most importantly, RIOT's process handling
+didn't support signaling or forking and there was no file system. These
+were obstacles in our path to a working dash implementation that we
+needed to overcome. Some of these later turned out to be bigger
+impediments than initially expected, with the effect that our planned
+schedule couldn't be kept.
 
 \section{Achievements}
 \label{sec:Achievements}
+During our work on the project, we were able to define all of the POSIX
+prototypes needed for integration of dash into RIOT. We implemented
+capabilities for the RIOT scheduler to kill processes other than the
+currently running one; the corresponding pull request, however, is
+currently stalled because there is a major restructuring of RIOT's IPC
+in the works, which takes priority over the scheduler restructuring. We
+also laid the groundwork for providing a \texttt{fork()} system call,
+implementing the high-level call. As a result of defining the POSIX
+prototypes, we are now able to compile dash on RIOT. We have provided
+a working file system interface based on FUSE and have started
+investigations in how to best implement a file system for RIOT. We also
+provide SCFS, the \texttt{shell\_commands} file system, giving access to
+already implemented shell handlers in RIOT.
 
 \subsection{Comparison to original plan}
 \label{sub:Comparison to original plan}
+Our original mission statement was to provide all of the missing POSIX
+functionality required by dash to compile and run on RIOT. This goal was
+only partially achieved -- specifically, we did not implement wrappers
+for the POSIX functionality and there is no functioning file system yet.
+We underestimated these requirements in our original assessment.
 
 \subsection{Pull Requests}
 \label{sub:Pull Requests}
+We submitted the following pull requests as part of this project:
+
+\begin{itemize}
+  \item \textbf{\#1166 Extend existing POSIX headers by using
+    \texttt{-include} flag}: Newlib and msp430-clib have some POSIX
+    headers, but do not define all of the POSIX prototypes, macros,
+    types et cetera.  Moreover, they do not supply any means to include
+    them. This pull request attempts to solve the problem by including
+    them globally into every compiling unit using the \texttt{-include}
+    flag.
+  \item \textbf{\#1243 shell: Return-based error-handling for shell
+    handlers}: Shell handlers can be interpeted as shell commands, with
+    the possibility to interpret the return value. Also has the added
+    benefit of enabling testing of shell handlers via unit tests.
+  \item \textbf{\#1245 core: Allow killing tasks using PID}: Allows the
+    scheduler to kill tasks other than the currently active task by
+    using the target task's PID. This pull request is currently stalled
+    because RIOT's IPC is being reworked.
+  \item \textbf{\#1265 fs: Filesystem module (WIP)}: Creates a common
+    interface to be used by all filesystems.
+  \item \textbf{\#1384 Implement Fork}: Implements \texttt{fork()} by
+    using a dedicated stack pool for forked processes.
+  \item \textbf{\#1418 sys: scfs: Add filesystem that allows to mount
+    shell\_command array as directory of executable files}: Depends on
+    \textbf{\#1265}.
+\end{itemize}
 
 \section{Perspectives}
 \label{sec:Perspectives}
+We still need to work on the comments and suggestions made by the RIOT
+team regarding our pull requests. This includes better integration with
+the rest of the codebase, refactoring, documentation and, most
+importantly, tests. We also plan to finish the missing parts of what we
+originally intended to implement during the course of the project,
+namely the file system and the missing POSIX functionalities.
 
 \section{Conclusion}
 \label{sec:Conclusion}
+Our time management was not optimal. We spent more time than expected on
+providing POSIX funtionality and did not anticipate the workload
+associated with the missing features, especially the filesystem. All in
+all, we believe we laid good groundwork for furthering RIOT's POSIX
+compliance and providing an execution environment for shell scripts,
+even though not all of our goals were met within the planned timeframe.
 
 \section*{Acknowledgment}
 \label{sec:Acknowledgement}
+We would like to thank Emmanuel Baccelli, Oleg Hahm and Hauke Petersen
+for initiating and managing the project and always being available for
+feedback and tips. We would also like to thank Stefan Pfeiffer for
+consulting with us regarding the file system and Ren\'{e} Kijewski,
+Christian Mehlis and Ludwig Ortmann for providing feedback on our pull
+requests.
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,bibliography}
