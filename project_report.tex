@@ -67,10 +67,13 @@ interact directly with the system, executing commands, producing output
 et cetera. However, this is not the focus of this project. There is no
 real need for an interactive shell in the embedded context, where
 devices are ideally programmed once and then left to perform their tasks
-indefinitely, producing non-interactive output.\todo{Maybe mention that there is already a somewhat interactive shell.} The focus, as described
-in section \ref{sub:Motivation}, is primarily to provide an execution
-environment for shell scripts as a lightweight alternative to compiling
-and flashing full-fledged C applications.
+indefinitely, producing non-interactive output. For those cases where
+interactivity is desired, RIOT already provides a minimal interactive
+shell, which is not much more than a command line interface and can't
+execute shell scripts. The focus here, as described in section
+\ref{sub:Motivation}, is primarily to provide an execution environment
+for shell scripts as a lightweight alternative to compiling and flashing
+full-fledged C applications.
 
 \section{Approach}
 \label{sec:Approach}
