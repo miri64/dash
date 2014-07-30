@@ -197,7 +197,9 @@ a problem we needed to adress in order to provide a function shell
 script environment.
 
 We designed a file system interface which was loosely based on
-FUSE\cite{fuse}. We informed ourselves about possible file systems to
+FUSE\cite{fuse}. However as communication endpoints would provide a great
+abstraction for file descriptors this implementation is also waiting for
+PR \#1270. Furthermore, e informed ourselves about possible file systems to
 implement in order to present shell scripts to RIOT. These were the
 candidates we considered:
 
