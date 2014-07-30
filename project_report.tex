@@ -231,7 +231,14 @@ to further applications that might want to use this commands.
 
 \subsubsection{Wrappers for POSIX functions}
 \label{ssub:Wrappers for POSIX functions}
-\todo{this isn't finished, right? what is the status?}
+We provided the needed header defintions for dash, but had no time to write
+the wrappers around the RIOT functionalities we implemented. What would be
+needed are wrappers to the \texttt{fs} module for file-related calls, as an 
+implementation of \texttt{\_kill\_r()} that would wrap
+\texttt{sched\_task\_kill()} if signal type \texttt{SIGKILL} was be given.
+Our fork implementation however was implemented in a way, that newlib would
+automatically pick it up on including unistd.h, since it has the
+prototype it expects for its fork wrapper.
 
 \subsection{Issues}
 \label{sub:Issues}
@@ -299,6 +306,8 @@ We submitted the following pull requests as part of this project:
   \item \textbf{\#1418 sys: scfs: Add filesystem that allows to mount
     shell\_command array as directory of executable files}: Depends on
     \textbf{\#1265}.
+  \item \textbf{\#1418 posix: Add some more POSIX headers needed for dash}: Depends on
+    \textbf{\#1166}.
 \end{itemize}
 
 \section{Perspectives}
