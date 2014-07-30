@@ -154,8 +154,6 @@ approach to implementing them in detail.
 
 \subsubsection{Process handling and signaling}
 \label{ssub:Process handling and signaling}
-\todo{do we talk about IPC here?}
-
 \subsubsection{\texttt{fork()}}
 \label{ssub:fork}
 Implementing \texttt{fork()} turned out to be not exactly trivial, since
@@ -180,6 +178,15 @@ matter of supplying a \texttt{sched\_task\_kill()} function to kill
 processes using their PID and refactoring the old
 \texttt{sched\_task\_exit()} (used to terminate the currently active
 process) to call this new function.
+
+It was, however, pointed out to us that this is dangerous with the current IPC
+implementation: Basically, communication endpoints in the IPC are tied to a
+thread and if a thread is killed from the outside there is no way for another
+thread that was currently communicating with it to recover from this. There is
+however a Pull Request (\#1270) in review aimed to fix this by making the IPC
+endpoints independent from threads. Thus, it would be ill-adviced to merge
+\texttt{sched\_task\_kill()} into master before this feature was included into
+RIOT.
 
 \subsubsection{File system}
 \label{ssub:File system}
