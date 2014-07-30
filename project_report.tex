@@ -218,6 +218,17 @@ candidates we considered:
     means that porting it to RIOT is feasible.
 \end{itemize}
 
+\subsubsection{SCFS}
+\label{ssub:SCFS}
+As already stated above, RIOT provides its own interactive shell. For this
+shell exist already a number of commands to control some RIOT module provided 
+by the module's developers via the module \texttt{shell\_commands}. As a shell
+script running in dash might want to use this commands, too, we decided to 
+provide them in a virtual filesystem called SCFS. It implements our own defined
+filesystem interface described in section \ref{ssub:File system}. We decided
+against a solution for with built-in commands to provide this functionality
+to further applications that might want to use this commands.
+
 \subsubsection{Wrappers for POSIX functions}
 \label{ssub:Wrappers for POSIX functions}
 \todo{this isn't finished, right? what is the status?}
