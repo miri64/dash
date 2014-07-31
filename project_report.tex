@@ -179,14 +179,15 @@ processes using their PID and refactoring the old
 \texttt{sched\_task\_exit()} (used to terminate the currently active
 process) to call this new function.
 
-It was, however, pointed out to us that this is dangerous with the current IPC
-implementation: Basically, communication endpoints in the IPC are tied to a
-thread and if a thread is killed from the outside there is no way for another
-thread that was currently communicating with it to recover from this. There is
-however a Pull Request (\#1270) in review aimed to fix this by making the IPC
-endpoints independent from threads. Thus, it would be ill-adviced to merge
-\texttt{sched\_task\_kill()} into master before this feature was included into
-RIOT.
+It was, however, pointed out to us\cite{1245} that this is dangerous
+with the current IPC implementation: Basically, communication endpoints
+in the IPC are tied to a thread and if a thread is killed from the
+outside, there is no way for another thread that was currently
+communicating with it to recover from this. There is however a Pull
+Request\cite{1270} currently in review aimed to fix this by making the
+IPC endpoints independent from threads. Thus, it would be ill-advised to
+merge \texttt{sched\_task\_kill()} into master before this feature is
+included into RIOT.
 
 \subsubsection{File system}
 \label{ssub:File system}
@@ -287,29 +288,31 @@ We submitted the following pull requests as part of this project:
 
 \begin{itemize}
   \item \textbf{\#1166 Extend existing POSIX headers by using
-    \texttt{-include} flag}: Newlib and msp430-clib have some POSIX
-    headers, but do not define all of the POSIX prototypes, macros,
-    types et cetera.  Moreover, they do not supply any means to include
-    them. This pull request attempts to solve the problem by including
-    them globally into every compiling unit using the \texttt{-include}
-    flag.
+    \texttt{-include} flag}\cite{1166}: Newlib and msp430-clib have some
+    POSIX headers, but do not define all of the POSIX prototypes,
+    macros, types et cetera.  Moreover, they do not supply any means to
+    include them. This pull request attempts to solve the problem by
+    including them globally into every compiling unit using the
+    \texttt{-include} flag.
   \item \textbf{\#1243 shell: Return-based error-handling for shell
-    handlers}: Shell handlers can be interpeted as shell commands, with
-    the possibility to interpret the return value. Also has the added
-    benefit of enabling testing of shell handlers via unit tests.
-  \item \textbf{\#1245 core: Allow killing tasks using PID}: Allows the
-    scheduler to kill tasks other than the currently active task by
-    using the target task's PID. This pull request is currently stalled
-    because RIOT's IPC is being reworked.
-  \item \textbf{\#1265 fs: Filesystem module (WIP)}: Creates a common
-    interface to be used by all filesystems.
-  \item \textbf{\#1384 Implement Fork}: Implements \texttt{fork()} by
-    using a dedicated stack pool for forked processes.
+    handlers}\cite{1243}: Shell handlers can be interpeted as shell
+    commands, with the possibility to interpret the return value. Also
+    has the added benefit of enabling testing of shell handlers via unit
+    tests.
+  \item \textbf{\#1245 core: Allow killing tasks using PID}\cite{1245}:
+    Allows the scheduler to kill tasks other than the currently active
+    task by using the target task's PID. This pull request is currently
+    stalled because RIOT's IPC is being reworked.
+  \item \textbf{\#1265 fs: Filesystem module (WIP)}\cite{1265}: Creates
+    a common interface to be used by all filesystems.
+  \item \textbf{\#1384 Implement Fork}\cite{1384}: Implements
+    \texttt{fork()} by using a dedicated stack pool for forked
+    processes.
   \item \textbf{\#1418 sys: scfs: Add filesystem that allows to mount
-    shell\_command array as directory of executable files}: Depends on
-    \textbf{\#1265}.
-  \item \textbf{\#1418 posix: Add some more POSIX headers needed for dash}: Depends on
-    \textbf{\#1166}.
+    shell\_command array as directory of executable files}\cite{1418}:
+    Depends on \textbf{\#1265}.
+  \item \textbf{\#1493 posix: Add some more POSIX headers needed for
+    dash}\cite{1493}: Depends on \textbf{\#1166}.
 \end{itemize}
 
 \section{Perspectives}
