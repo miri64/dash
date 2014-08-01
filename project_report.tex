@@ -160,8 +160,28 @@ include process handling and signaling, the ability to call
 well as wrappers for POSIX functions. We will now describe these and our
 approach to implementing them in detail.
 
-\subsubsection{Process handling and signaling}
-\label{ssub:Process handling and signaling}
+\subsubsection{\texttt{kill()}}
+\label{ssub:kill}
+The most important process handling and signaling operation for us was
+first and foremost to be able to kill processes. Shells expect to be
+able to kill processes ``from the outside``, i.e.  the scheduler has the
+ability to terminate threads other than the one that is currently
+running. Implementing this functionality was a simple matter of
+supplying a \texttt{sched\_task\_kill()} function to kill processes
+using their PID and refactoring the old \texttt{sched\_task\_exit()}
+(used to terminate the currently active process) to call this new
+function.
+
+It was, however, pointed out to us\cite{1245} that this is dangerous
+with the current IPC implementation: Basically, communication endpoints
+in the IPC are tied to a thread and if a thread is killed from the
+outside, there is no way for another thread that was currently
+communicating with it to recover from this. There is however a Pull
+Request\cite{1270} currently in review aimed at fixing this by making
+the IPC endpoints independent from threads. Thus, it would be
+ill-advised to merge \texttt{sched\_task\_kill()} into master before
+this feature is included into RIOT.
+
 \subsubsection{\texttt{fork()}}
 \label{ssub:fork}
 Implementing \texttt{fork()} turned out to be not exactly trivial, since
@@ -176,26 +196,6 @@ processes. Forking a thread then allocates the next free block in this
 pool, duplicates the current thread's stack and stack pointer and sets
 the newly created thread's instruction pointer to a point after the
 original thread's return.
-
-\subsubsection{\texttt{kill()}}
-\label{ssub:kill}
-Shells expect to be able to kill processes ``from the outside``, i.e.
-the scheduler has the ability to terminate threads other than the one
-that is currently running. Implementing this functionality was a simple
-matter of supplying a \texttt{sched\_task\_kill()} function to kill
-processes using their PID and refactoring the old
-\texttt{sched\_task\_exit()} (used to terminate the currently active
-process) to call this new function.
-
-It was, however, pointed out to us\cite{1245} that this is dangerous
-with the current IPC implementation: Basically, communication endpoints
-in the IPC are tied to a thread and if a thread is killed from the
-outside, there is no way for another thread that was currently
-communicating with it to recover from this. There is however a Pull
-Request\cite{1270} currently in review aimed to fix this by making the
-IPC endpoints independent from threads. Thus, it would be ill-advised to
-merge \texttt{sched\_task\_kill()} into master before this feature is
-included into RIOT.
 
 \subsubsection{File system}
 \label{ssub:File system}
